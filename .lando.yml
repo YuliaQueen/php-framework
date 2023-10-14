@@ -1,0 +1,12 @@
+name: php-framework
+recipe: lemp
+config:
+  webroot: public
+  php: '8.2'
+  database: mysql
+  xdebug: true
+services:
+  phpmyadmin:
+    type: phpmyadmin
+  redis:
+    type: redis
