@@ -2,29 +2,29 @@
 
 namespace Queendev\PhpFramework\Http;
 
-use FastRoute\RouteCollector;
-use function FastRoute\simpleDispatcher;
+use Queendev\PhpFramework\Routing\RouterInterface;
 
 class Kernel
 {
+    public function __construct(
+        private RouterInterface $router
+    )
+    {
+    }
+
     /**
      * @param Request $request
      * @return Response
      */
     public function handle(Request $request): Response
     {
-        $dispatcher = simpleDispatcher(function (RouteCollector $collector) {
-            $routes = include BASE_PATH . '/routes/web.php';
+        try {
+            [$routerHandler, $vars] = $this->router->dispatch($request);
+            $response = call_user_func_array($routerHandler, $vars);
+        } catch (\Throwable $e) {
+            $response = new Response($e->getMessage(), 500);
+        }
 
-            foreach ($routes as $route) {
-                $collector->addRoute(...$route);
-            }
-        });
-
-        $routInfo = $dispatcher->dispatch($request->getMethod(), $request->getPath());
-
-        [$status, [$controller, $action], $vars] = $routInfo;
-
-        return call_user_func_array([new $controller, $action], $vars);
+        return $response;
     }
 }
