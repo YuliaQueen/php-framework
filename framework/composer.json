@@ -1,0 +1,19 @@
+{
+  "name": "queendev/php-framework",
+  "minimum-stability": "dev",
+  "type": "project",
+  "authors": [
+    {
+      "name": "queen",
+      "email": "youlka25@yandex.ru"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Queendev\\PhpFramework\\": "src/"
+    }
+  },
+  "require": {
+    "nikic/fast-route": "^1.3"
+  }
+}
