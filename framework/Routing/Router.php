@@ -10,6 +10,9 @@ use function FastRoute\simpleDispatcher;
 
 class Router implements RouterInterface
 {
+    const STATUS_NOT_ALLOWED = 405;
+    const STATUS_NOT_FOUND = 404;
+
     /**
      * @param Request $request
      * @return array
@@ -52,9 +55,13 @@ class Router implements RouterInterface
             case \FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
                 $allowedMethods = implode(', ', $routeInfo[1]);
                 $message = 'Supported methods: ' . $allowedMethods;
-                throw new MethodNotAllowedException($message);
+                $exception = new MethodNotAllowedException($message);
+                $exception->setStatusCode(self::STATUS_NOT_ALLOWED);
+                throw $exception;
             default:
-                throw new RouteNotFoundException('Route not found');
+                $exception = new RouteNotFoundException('Route not found');
+                $exception->setStatusCode(self::STATUS_NOT_FOUND);
+                throw $exception;
         }
     }
 }

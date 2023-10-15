@@ -2,6 +2,7 @@
 
 namespace Queendev\PhpFramework\Http;
 
+use Queendev\PhpFramework\Http\Exceptions\HttpException;
 use Queendev\PhpFramework\Routing\RouterInterface;
 
 class Kernel
@@ -21,6 +22,8 @@ class Kernel
         try {
             [$routerHandler, $vars] = $this->router->dispatch($request);
             $response = call_user_func_array($routerHandler, $vars);
+        } catch (HttpException $e) {
+            $response = new Response($e->getMessage(), $e->getStatusCode());
         } catch (\Throwable $e) {
             $response = new Response($e->getMessage(), 500);
         }

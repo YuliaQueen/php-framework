@@ -6,15 +6,16 @@ class Response
 {
     /**
      * @param string $content
-     * @param int $status
+     * @param int $statusCode
      * @param array $headers
      */
     public function __construct(
         private string $content,
-        private int    $status = 200,
+        private int    $statusCode = 200,
         private array  $headers = []
     )
     {
+        http_response_code($this->statusCode);
     }
 
     /**
