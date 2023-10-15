@@ -6,29 +6,21 @@ class Route
 {
     /**
      * @param string $uri
-     * @param array $handler
+     * @param array|callable $handler
      * @return array
      */
-    public static function get(string $uri, array $handler): array
+    public static function get(string $uri, array|callable $handler): array
     {
-        return [
-            'GET',
-            $uri,
-            $handler
-        ];
+        return ['GET', $uri, $handler];
     }
 
     /**
      * @param string $uri
-     * @param array $handler
+     * @param array|callable $handler
      * @return array
      */
-    public static function post(string $uri, array $handler): array
+    public static function post(string $uri, array|callable $handler): array
     {
-        return [
-            'POST',
-            $uri,
-            $handler
-        ];
+        return ['POST', $uri, $handler];
     }
 }
