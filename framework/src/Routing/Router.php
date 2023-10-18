@@ -13,6 +13,8 @@ class Router implements RouterInterface
     const STATUS_NOT_ALLOWED = 405;
     const STATUS_NOT_FOUND = 404;
 
+    private array $routes = [];
+
     /**
      * @param Request $request
      * @return array
@@ -32,6 +34,15 @@ class Router implements RouterInterface
     }
 
     /**
+     * @param array $routes
+     * @return void
+     */
+    public function registerRoutes(array $routes): void
+    {
+        $this->routes = $routes;
+    }
+
+    /**
      * @param Request $request
      * @return array
      * @throws MethodNotAllowedException
@@ -40,9 +51,7 @@ class Router implements RouterInterface
     private function extractRouteInfo(Request $request): array
     {
         $dispatcher = simpleDispatcher(function (RouteCollector $collector) {
-            $routes = include BASE_PATH . '/routes/web.php';
-
-            foreach ($routes as $route) {
+            foreach ($this->routes as $route) {
                 $collector->addRoute(...$route);
             }
         });

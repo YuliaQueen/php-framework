@@ -13,7 +13,7 @@
   ],
   "require": {
     "php": "^8.2",
-    "queendev/php-framework": "dev-master"
+    "queendev/php-framework": "dev-main"
   },
   "require-dev": {
     "symfony/var-dumper": "^6.3"
