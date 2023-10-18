@@ -3,6 +3,9 @@
 namespace Queendev\PhpFramework\Routing;
 
 use FastRoute\RouteCollector;
+use League\Container\Container;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Queendev\PhpFramework\Http\Exceptions\MethodNotAllowedException;
 use Queendev\PhpFramework\Http\Exceptions\RouteNotFoundException;
 use Queendev\PhpFramework\Http\Request;
@@ -15,18 +18,23 @@ class Router implements RouterInterface
 
     private array $routes = [];
 
+
     /**
      * @param Request $request
+     * @param Container $container
      * @return array
      * @throws MethodNotAllowedException
      * @throws RouteNotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    public function dispatch(Request $request): array
+    public function dispatch(Request $request, Container $container): array
     {
         [$handler, $vars] = $this->extractRouteInfo($request);
 
         if (is_array($handler)) {
-            [$controller, $action] = $handler;
+            [$controllerId, $action] = $handler;
+            $controller = $container->get($controllerId);
             $handler = [new $controller, $action];
         }
 
