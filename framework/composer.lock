@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6c37c9a23845d43c82636b5d51dab433",
+    "content-hash": "b8bfed2ca7ed7e8909e7c2f147e28ca7",
     "packages": [
         {
             "name": "league/container",
@@ -192,6 +192,80 @@
                 "source": "https://github.com/php-fig/container"
             },
             "time": "2023-09-22T11:11:30+00:00"
+        },
+        {
+            "name": "symfony/dotenv",
+            "version": "6.4.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/dotenv.git",
+                "reference": "2136b008ef978b816678941687f9315b0d1cdfd4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/dotenv/zipball/2136b008ef978b816678941687f9315b0d1cdfd4",
+                "reference": "2136b008ef978b816678941687f9315b0d1cdfd4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "conflict": {
+                "symfony/console": "<5.4",
+                "symfony/process": "<5.4"
+            },
+            "require-dev": {
+                "symfony/console": "^5.4|^6.0|^7.0",
+                "symfony/process": "^5.4|^6.0|^7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Dotenv\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Registers environment variables from a .env file",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "dotenv",
+                "env",
+                "environment"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/dotenv/tree/6.4"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2023-10-10T05:29:54+00:00"
         }
     ],
     "packages-dev": [
@@ -764,12 +838,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "5a24ff838baf36a7ef48b088fdc4057d7bf8e949"
+                "reference": "db9ae302fe1ad89451ecfacc850e88ab7c6df5a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/5a24ff838baf36a7ef48b088fdc4057d7bf8e949",
-                "reference": "5a24ff838baf36a7ef48b088fdc4057d7bf8e949",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/db9ae302fe1ad89451ecfacc850e88ab7c6df5a3",
+                "reference": "db9ae302fe1ad89451ecfacc850e88ab7c6df5a3",
                 "shasum": ""
             },
             "require": {
@@ -858,7 +932,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-10-16T06:57:02+00:00"
+            "time": "2023-10-18T14:17:28+00:00"
         },
         {
             "name": "sebastian/cli-parser",
