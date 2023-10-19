@@ -35,7 +35,7 @@ class Router implements RouterInterface
         if (is_array($handler)) {
             [$controllerId, $action] = $handler;
             $controller = $container->get($controllerId);
-            $handler = [new $controller, $action];
+            $handler = [$controller, $action];
         }
 
         return [$handler, $vars];
