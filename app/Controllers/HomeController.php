@@ -2,9 +2,10 @@
 
 namespace App\Controllers;
 
+use Queendev\PhpFramework\Controller\AbstractController;
 use Queendev\PhpFramework\Http\Response;
 
-class HomeController
+class HomeController extends AbstractController
 {
     /**
      * @return Response
