@@ -2,18 +2,23 @@
 
 namespace App\Controllers;
 
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Queendev\PhpFramework\Controller\AbstractController;
 use Queendev\PhpFramework\Http\Response;
 
 class HomeController extends AbstractController
 {
+
     /**
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function index(): Response
     {
-        $content = 'Hello World from Controller!';
-
-        return new Response($content);
+        return $this->render('home', [
+            'title' => 'Welcome to HOME'
+        ]);
     }
 }
