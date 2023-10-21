@@ -1,0 +1,20 @@
+#!/usr/bin/env php
+
+<?php
+
+use League\Container\Container;
+use Queendev\PhpFramework\Console\Kernel;
+
+define('BASE_PATH', dirname(__FILE__));
+
+require_once BASE_PATH . '/vendor/autoload.php';
+
+/* @var Container */
+$container = require BASE_PATH . '/config/services.php';
+
+/* @var Kernel */
+$kernel = $container->get(Kernel::class);
+
+$status = $kernel->handle();
+
+exit($status);
