@@ -1,10 +1,12 @@
 <?php
 
+use Doctrine\DBAL\Connection;
 use League\Container\Argument\Literal\ArrayArgument;
 use League\Container\Argument\Literal\StringArgument;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 use Queendev\PhpFramework\Controller\AbstractController;
+use Queendev\PhpFramework\Dbal\ConnectionFactory;
 use Queendev\PhpFramework\Http\Kernel;
 use Queendev\PhpFramework\Routing\Router;
 use Queendev\PhpFramework\Routing\RouterInterface;
@@ -19,6 +21,7 @@ $dotenv->load(BASE_PATH . '/.env');
 $routes = include BASE_PATH . '/routes/web.php';
 $appEnv = $_ENV['APP_ENV'] ?? 'dev';
 $viewsPath = BASE_PATH . '/views';
+$databaseUrl = $_ENV['DATABASE_URL'] ?? '';
 
 // Application services
 $container = new Container();
@@ -41,5 +44,12 @@ $container->addShared('twig', Environment::class)
 
 $container->inflector(AbstractController::class)
     ->invokeMethod('setContainer', [$container]);
+
+$container->add(ConnectionFactory::class)
+    ->addArgument(new StringArgument($databaseUrl));
+
+$container->addShared(Connection::class, function () use ($container): Connection{
+    return $container->get(ConnectionFactory::class)->create();
+});
 
 return $container;
