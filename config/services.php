@@ -6,6 +6,8 @@ use League\Container\Argument\Literal\StringArgument;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 use Queendev\PhpFramework\Console\Application;
+use Queendev\PhpFramework\Console\CommandPrefix;
+use Queendev\PhpFramework\Console\Commands\MigrateCommand;
 use Queendev\PhpFramework\Console\Kernel as ConsoleKernel;
 use Queendev\PhpFramework\Controller\AbstractController;
 use Queendev\PhpFramework\Dbal\ConnectionFactory;
@@ -66,5 +68,8 @@ $container->add(ConsoleKernel::class)
     ->addArgument(Application::class);
 
 $container->add('console-command-namespace', new StringArgument('Queendev\\PhpFramework\\Console\\Commands\\'));
+
+$container->add(CommandPrefix::CONSOLE->value . 'migrate', MigrateCommand::class)
+    ->addArgument(Connection::class);
 
 return $container;
