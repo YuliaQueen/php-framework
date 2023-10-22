@@ -5,6 +5,8 @@ use League\Container\Argument\Literal\ArrayArgument;
 use League\Container\Argument\Literal\StringArgument;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
+use Queendev\PhpFramework\Console\Application;
+use Queendev\PhpFramework\Console\Kernel as ConsoleKernel;
 use Queendev\PhpFramework\Controller\AbstractController;
 use Queendev\PhpFramework\Dbal\ConnectionFactory;
 use Queendev\PhpFramework\Http\Kernel;
@@ -48,8 +50,21 @@ $container->inflector(AbstractController::class)
 $container->add(ConnectionFactory::class)
     ->addArgument(new StringArgument($databaseUrl));
 
-$container->addShared(Connection::class, function () use ($container): Connection{
+$container->addShared(Connection::class, function () use ($container): Connection {
     return $container->get(ConnectionFactory::class)->create();
 });
+
+/** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+// Console services
+
+$container->add(Application::class)
+    ->addArgument($container);
+
+$container->add(ConsoleKernel::class)
+    ->addArgument($container)
+    ->addArgument(Application::class);
+
+$container->add('console-command-namespace', new StringArgument('Queendev\\PhpFramework\\Console\\Commands\\'));
 
 return $container;
