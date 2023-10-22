@@ -28,6 +28,26 @@ class Application
         /** @var CommandInterface $command */
         $command = $this->container->get(CommandPrefix::CONSOLE->value . $commandName);
 
-        return $command->execute();
+        $args = array_slice($argv, 2);
+        $options = $this->parseOptions($args);
+
+        return $command->execute($options);
+    }
+
+    /**
+     * @param $args
+     * @return array
+     */
+    private function parseOptions($args): array
+    {
+        $options = [];
+        foreach ($args as $arg) {
+            if (str_starts_with($arg, '--')) {
+                $option = explode('=', substr($arg, 2));
+                $options[$option[0]] = $option[1] ?? true;
+            }
+        }
+
+        return $options;
     }
 }
