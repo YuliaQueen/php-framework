@@ -15,7 +15,8 @@ class MigrateCommand implements CommandInterface
     private string $name = 'migrate';
 
     public function __construct(
-        private Connection $connection
+        private Connection $connection,
+        private string     $migrationsPath
     )
     {
     }
@@ -31,7 +32,27 @@ class MigrateCommand implements CommandInterface
 
             $this->connection->beginTransaction();
 
-            // TODO: Execute migrations
+            $appliedMigrations = $this->getAppliedMigrations();
+
+            $migrationFiles = $this->getMigrationFiles();
+
+            $migrationToApply = array_values(array_diff($migrationFiles, $appliedMigrations));
+
+            $schema = new Schema();
+
+            foreach ($migrationToApply as $migration) {
+                $migrationInstance = require $this->migrationsPath . '/' . $migration;
+
+                $migrationInstance->up($schema);
+
+                $sqlArray = $schema->toSql($this->connection->getDatabasePlatform());
+
+                foreach ($sqlArray as $sql) {
+                    $this->connection->executeQuery($sql);
+                }
+
+                $this->addMigration($migration);
+            }
 
             $this->connection->commit();
         } catch (Exception $e) {
@@ -70,5 +91,42 @@ class MigrateCommand implements CommandInterface
 
             echo 'Migrations table created.' . PHP_EOL;
         }
+    }
+
+
+    /**
+     * @return array
+     * @throws Exception
+     */
+    private function getAppliedMigrations(): array
+    {
+        $queryBuilder = $this->connection->createQueryBuilder();
+
+        return $queryBuilder->select('migration')->from(self::MIGRATIONS_TABLE_NAME)
+            ->executeQuery()
+            ->fetchFirstColumn();
+    }
+
+    /**
+     * @return array
+     */
+    private function getMigrationFiles(): array
+    {
+        $files = array_filter(scandir($this->migrationsPath), fn($file) => $file !== '.' && $file !== '..');
+
+        return array_values($files);
+    }
+
+    /**
+     * @param string $name
+     * @return void
+     * @throws Exception
+     */
+    private function addMigration(string $name): void
+    {
+        $queryBuilder = $this->connection->createQueryBuilder();
+        $queryBuilder->insert(self::MIGRATIONS_TABLE_NAME)->values(['migration' => ':migration'])
+            ->setParameter('migration', $name)
+            ->executeQuery();
     }
 }

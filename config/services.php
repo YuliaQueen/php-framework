@@ -70,6 +70,7 @@ $container->add(ConsoleKernel::class)
 $container->add('console-command-namespace', new StringArgument('Queendev\\PhpFramework\\Console\\Commands\\'));
 
 $container->add(CommandPrefix::CONSOLE->value . 'migrate', MigrateCommand::class)
-    ->addArgument(Connection::class);
+    ->addArgument(Connection::class)
+    ->addArgument(new StringArgument(BASE_PATH . '/database/migrations'));
 
 return $container;
