@@ -44,4 +44,44 @@ class Request
     {
         return strtok($this->server['REQUEST_URI'], '?');
     }
+
+    /**
+     * @return array
+     */
+    public function getGetParams(): array
+    {
+        return $this->getParams;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPostData(): array
+    {
+        return $this->postData;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFiles(): array
+    {
+        return $this->files;
+    }
+
+    /**
+     * @return array
+     */
+    public function getServer(): array
+    {
+        return $this->server;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCookies(): array
+    {
+        return $this->cookies;
+    }
 }

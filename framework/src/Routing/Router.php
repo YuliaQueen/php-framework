@@ -6,6 +6,7 @@ use FastRoute\RouteCollector;
 use League\Container\Container;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Queendev\PhpFramework\Controller\AbstractController;
 use Queendev\PhpFramework\Http\Exceptions\MethodNotAllowedException;
 use Queendev\PhpFramework\Http\Exceptions\RouteNotFoundException;
 use Queendev\PhpFramework\Http\Request;
@@ -35,6 +36,11 @@ class Router implements RouterInterface
         if (is_array($handler)) {
             [$controllerId, $action] = $handler;
             $controller = $container->get($controllerId);
+
+            if (is_subclass_of($controller, AbstractController::class)) {
+                $controller->setRequest($request);
+            }
+
             $handler = [$controller, $action];
         }
 

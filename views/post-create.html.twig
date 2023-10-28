@@ -1,0 +1,40 @@
+{% extends 'layouts/default.html.twig' %}
+
+{% block main %}
+
+    <h3 class="mb-4">Create post</h3>
+
+    <section class="pb-4">
+        <div class="bg-white border rounded-5">
+            <section class="w-100 p-4 text-center pb-4">
+                <form action="/posts" method="post">
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="form6Example2" style="margin-left: 0;">Title</label>
+                                <input name="title" type="text" id="form6Example2" class="form-control" required>
+                                <div class="form-notch">
+                                    <div class="form-notch-leading" style="width: 9px;"></div>
+                                    <div class="form-notch-middle" style="width: 68px;"></div>
+                                    <div class="form-notch-trailing"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="form6Example7" style="margin-left: 0px;">Text</label>
+                        <textarea name="content" class="form-control" id="form6Example7" rows="12" required></textarea>
+                        <div class="form-notch">
+                            <div class="form-notch-leading" style="width: 9px;"></div>
+                            <div class="form-notch-middle" style="width: 135.2px;"></div>
+                            <div class="form-notch-trailing"></div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block mb-4">Create</button>
+                </form>
+            </section>
+        </div>
+    </section>
+
+{% endblock %}

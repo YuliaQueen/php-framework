@@ -5,16 +5,13 @@ namespace Queendev\PhpFramework\Controller;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Queendev\PhpFramework\Http\Request;
 use Queendev\PhpFramework\Http\Response;
 
 abstract class AbstractController
 {
     protected ?ContainerInterface $container = null;
-
-    public function setContainer(ContainerInterface $container): void
-    {
-        $this->container = $container;
-    }
+    protected Request $request;
 
     /**
      * @param string $view
@@ -33,5 +30,18 @@ abstract class AbstractController
         $content = $this->container->get('twig')->render($view, $params);
 
         return $response->setContent($content);
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function setRequest(Request $request): void
+    {
+        $this->request = $request;
+    }
+
+    public function setContainer(ContainerInterface $container): void
+    {
+        $this->container = $container;
     }
 }
