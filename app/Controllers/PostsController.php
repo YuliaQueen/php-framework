@@ -9,6 +9,7 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Queendev\PhpFramework\Controller\AbstractController;
 use Queendev\PhpFramework\Http\Exceptions\NotFoundException;
+use Queendev\PhpFramework\Http\RedirectResponse;
 use Queendev\PhpFramework\Http\Response;
 
 class PostsController extends AbstractController
@@ -55,7 +56,6 @@ class PostsController extends AbstractController
     /**
      * @return Response
      * @throws ContainerExceptionInterface
-     * @throws Exception
      * @throws NotFoundExceptionInterface
      */
     public function store(): Response
@@ -65,10 +65,14 @@ class PostsController extends AbstractController
             $this->request->getPostData()['content']
         );
 
-        $post = $this->service->save($post);
+        try {
+            $post = $this->service->save($post);
+        } catch (\Throwable $e) {
+            return $this->render('error', [
+                'message' => $e->getMessage()
+            ]);
+        }
 
-        return $this->render('post', [
-            'id' => $post->getId()
-        ]);
+        return new RedirectResponse("/posts/{$post->getId()}");
     }
 }

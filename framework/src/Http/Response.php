@@ -4,6 +4,9 @@ namespace Queendev\PhpFramework\Http;
 
 class Response
 {
+    const CODE_REDIRECT = 302;
+    const CODE_SUCCESS = 200;
+
     /**
      * @param string $content
      * @param int $statusCode
@@ -11,7 +14,7 @@ class Response
      */
     public function __construct(
         private string $content = '',
-        private int    $statusCode = 200,
+        private int    $statusCode = self::CODE_SUCCESS,
         private array  $headers = []
     )
     {
@@ -35,5 +38,15 @@ class Response
         $this->content = $content;
 
         return $this;
+    }
+
+    public function getHeader(string $string): string
+    {
+        return $this->headers[$string];
+    }
+
+    public function getStatusCode(): int
+    {
+        return $this->statusCode;
     }
 }
