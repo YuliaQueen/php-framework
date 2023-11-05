@@ -28,7 +28,6 @@ class PostsController extends AbstractController
      */
     public function view(int $id): Response
     {
-
         try {
             $post = $this->service->findOrFail($id);
         } catch (NotFoundException $e) {
@@ -37,7 +36,7 @@ class PostsController extends AbstractController
             ]);
         }
 
-        return $this->render('post', [
+        return $this->render('/post/post', [
             'post' => $post
         ]);
     }
@@ -67,6 +66,7 @@ class PostsController extends AbstractController
 
         try {
             $post = $this->service->save($post);
+            $this->session->setFlash('success', 'Post created');
         } catch (\Throwable $e) {
             return $this->render('error', [
                 'message' => $e->getMessage()

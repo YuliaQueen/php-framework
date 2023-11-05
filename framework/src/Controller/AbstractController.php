@@ -7,11 +7,13 @@ use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Queendev\PhpFramework\Http\Request;
 use Queendev\PhpFramework\Http\Response;
+use Queendev\PhpFramework\Session\SessionInterface;
 
 abstract class AbstractController
 {
     protected ?ContainerInterface $container = null;
     protected Request $request;
+    protected SessionInterface $session;
 
     /**
      * @param string $view
@@ -40,8 +42,21 @@ abstract class AbstractController
         $this->request = $request;
     }
 
+    /**
+     * @param ContainerInterface $container
+     * @return void
+     */
     public function setContainer(ContainerInterface $container): void
     {
         $this->container = $container;
+    }
+
+    /**
+     * @param SessionInterface $session
+     * @return void
+     */
+    public function setSession(SessionInterface $session): void
+    {
+        $this->session = $session;
     }
 }
