@@ -27,6 +27,7 @@ class TwigFactory
 
         $twig->addExtension(new DebugExtension());
         $twig->addFunction(new TwigFunction('session', [$this, 'getSession']));
+        $twig->addFunction(new TwigFunction('uri', [$this, 'getUri']));
 
         return $twig;
     }
@@ -34,5 +35,10 @@ class TwigFactory
     public function getSession(): SessionInterface
     {
         return $this->session;
+    }
+
+    public function getUri()
+    {
+        return $_SERVER['REQUEST_URI'];
     }
 }
