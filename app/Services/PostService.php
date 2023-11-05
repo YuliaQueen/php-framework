@@ -89,6 +89,33 @@ class PostService
     }
 
     /**
+     * @throws Exception
+     * @throws \Exception
+     */
+    public function findAll()
+    {
+        $result =  $this->getQueryBuilder()
+            ->select('*')
+            ->from('posts')
+            ->orderBy('created_at', 'DESC')
+            ->setMaxResults(10)
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        $posts = [];
+        foreach ($result as $post) {
+            $posts[] = Post::create(
+                title:     $post['title'],
+                content:   $post['content'],
+                id:        $post['id'],
+                createdAt: new \DateTimeImmutable($post['created_at']),
+            );
+        }
+
+        return $posts;
+    }
+
+    /**
      * @return QueryBuilder
      */
     private function getQueryBuilder(): QueryBuilder

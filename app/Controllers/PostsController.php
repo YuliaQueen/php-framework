@@ -49,7 +49,7 @@ class PostsController extends AbstractController
      */
     public function create(): Response
     {
-        return $this->render('post-create');
+        return $this->render('/post/post-create');
     }
 
 
@@ -74,5 +74,17 @@ class PostsController extends AbstractController
         }
 
         return new RedirectResponse("/posts/{$post->getId()}");
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function all()
+    {
+        $posts = $this->service->findAll();
+
+        return $this->render('/post/all-posts', [
+            'posts' => $posts
+        ]);
     }
 }
