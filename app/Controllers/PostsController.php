@@ -60,8 +60,8 @@ class PostsController extends AbstractController
     public function store(): Response
     {
         $post = Post::create(
-            $this->request->getPostData()['title'],
-            $this->request->getPostData()['content']
+            $this->request->input('title'),
+            $this->request->input('content')
         );
 
         try {

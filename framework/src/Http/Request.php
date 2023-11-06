@@ -98,4 +98,9 @@ class Request
     {
         $this->session = $session;
     }
+
+    public function input(string $key, $default = null): mixed
+    {
+        return $this->postData[$key] ?? $default;
+    }
 }

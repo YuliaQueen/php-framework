@@ -4,6 +4,16 @@
 
     <h3 class="mb-4">Регистрация</h3>
 
+    {% if session().hasFlash('error') %}
+        <div class="alert alert-danger mt-3">
+            <ul class="m-0">
+                {% for error in session().getFlash('error') %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
     <section class="pb-3">
         <div class="container">
             <div class="row justify-content-center">
@@ -16,7 +26,8 @@
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
-                                <input name="email" type="email" class="form-control" id="email" aria-describedby="emailHelp">
+                                <input name="email" type="email" class="form-control" id="email"
+                                       aria-describedby="emailHelp">
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Пароль</label>
@@ -24,7 +35,8 @@
                             </div>
                             <div class="mb-3">
                                 <label for="password_confirmation" class="form-label">Подтверждение пароля</label>
-                                <input name="password_confirmation" type="password" class="form-control" id="password_confirmation">
+                                <input name="password_confirmation" type="password" class="form-control"
+                                       id="password_confirmation">
                             </div>
                             <button type="submit" class="btn btn-outline-success">Зарегистрироваться</button>
                         </form>
