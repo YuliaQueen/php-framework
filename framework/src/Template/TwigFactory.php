@@ -44,7 +44,7 @@ class TwigFactory
         return $_SERVER['REQUEST_URI'];
     }
 
-    public function textTruncate(string $text, int $maxLength = 45): string
+    public function textTruncate(string $text, int $maxLength = 40): string
     {
         if (mb_strlen($text) > $maxLength) {
             $text = mb_strimwidth($text, 0, $maxLength, '...');
