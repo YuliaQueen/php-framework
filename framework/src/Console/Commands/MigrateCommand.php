@@ -27,42 +27,29 @@ class MigrateCommand implements CommandInterface
      */
     public function execute(array $parameters = []): int
     {
-        try {
-            $this->connection->setAutoCommit(false);
+        $this->createMigrationsTable();
 
-            $this->createMigrationsTable();
+        $appliedMigrations = $this->getAppliedMigrations();
 
-            $this->connection->beginTransaction();
+        $migrationFiles = $this->getMigrationFiles();
 
-            $appliedMigrations = $this->getAppliedMigrations();
+        $migrationToApply = array_values(array_diff($migrationFiles, $appliedMigrations));
 
-            $migrationFiles = $this->getMigrationFiles();
+        $schema = new Schema();
 
-            $migrationToApply = array_values(array_diff($migrationFiles, $appliedMigrations));
+        foreach ($migrationToApply as $migration) {
+            $migrationInstance = require $this->migrationsPath . '/' . $migration;
 
-            $schema = new Schema();
+            $migrationInstance->up($schema);
 
-            foreach ($migrationToApply as $migration) {
-                $migrationInstance = require $this->migrationsPath . '/' . $migration;
+            $sqlArray = $schema->toSql($this->connection->getDatabasePlatform());
 
-                $migrationInstance->up($schema);
-
-                $sqlArray = $schema->toSql($this->connection->getDatabasePlatform());
-
-                foreach ($sqlArray as $sql) {
-                    $this->connection->executeQuery($sql);
-                }
-
-                $this->addMigration($migration);
+            foreach ($sqlArray as $sql) {
+                $this->connection->executeQuery($sql);
             }
 
-            $this->connection->commit();
-        } catch (Exception $e) {
-            $this->connection->rollBack();
-            throw $e;
+            $this->addMigration($migration);
         }
-
-        $this->connection->setAutoCommit(true);
 
         return 0; // TODO: Change status code if needed
     }
