@@ -66,7 +66,7 @@ class PostsController extends AbstractController
 
         try {
             $post = $this->service->save($post);
-            $this->session->setFlash('success', 'Post created');
+            $this->request->getSession()->setFlash('success', 'Пост успешно создан');
         } catch (\Throwable $e) {
             return $this->render('error', [
                 'message' => $e->getMessage()

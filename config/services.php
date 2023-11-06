@@ -74,8 +74,7 @@ $container->addShared('twig', function () use ($container): Environment {
 
 // Controller services
 $container->inflector(AbstractController::class)
-    ->invokeMethod('setContainer', [$container])
-    ->invokeMethod('setSession', [$container->get(SessionInterface::class)]);
+    ->invokeMethod('setContainer', [$container]);
 
 // Database services
 $container->add(ConnectionFactory::class)

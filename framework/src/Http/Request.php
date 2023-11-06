@@ -2,8 +2,12 @@
 
 namespace Queendev\PhpFramework\Http;
 
+use Queendev\PhpFramework\Session\SessionInterface;
+
 class Request
 {
+    private SessionInterface $session;
+
     /**
      * @param array $getParams
      * @param array $postData
@@ -83,5 +87,15 @@ class Request
     public function getCookies(): array
     {
         return $this->cookies;
+    }
+
+    public function getSession(): SessionInterface
+    {
+        return $this->session;
+    }
+
+    public function setSession(SessionInterface $session): void
+    {
+        $this->session = $session;
     }
 }

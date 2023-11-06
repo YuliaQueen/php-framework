@@ -11,6 +11,7 @@ use Queendev\PhpFramework\Http\Response;
 class RequestHandler implements RequestHandlerInterface
 {
     private array $middlewares = [
+        StartSession::class,
         Authenticate::class,
         RouterDispatch::class
     ];
