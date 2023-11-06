@@ -2,11 +2,11 @@
 
 namespace Queendev\PhpFramework\Http;
 
-use League\Container\Container;
 use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Queendev\PhpFramework\Http\Exceptions\HttpException;
-use Queendev\PhpFramework\Routing\RouterInterface;
+use Queendev\PhpFramework\Http\Middleware\RequestHandlerInterface;
 
 class Kernel
 {
@@ -17,8 +17,8 @@ class Kernel
      * @throws NotFoundExceptionInterface
      */
     public function __construct(
-        private RouterInterface $router,
-        private Container $container
+        private ContainerInterface      $container,
+        private RequestHandlerInterface $requestHandler
     )
     {
         $this->appEnv = $container->get('APP_ENV');
@@ -32,8 +32,7 @@ class Kernel
     public function handle(Request $request): Response
     {
         try {
-            [$routerHandler, $vars] = $this->router->dispatch($request, $this->container);
-            $response = call_user_func_array($routerHandler, $vars);
+            $response = $this->requestHandler->handle($request);
         } catch (\Exception $e) {
             return $this->createExceptionResponse($e);
         }

@@ -12,6 +12,9 @@ use Queendev\PhpFramework\Console\Kernel as ConsoleKernel;
 use Queendev\PhpFramework\Controller\AbstractController;
 use Queendev\PhpFramework\Dbal\ConnectionFactory;
 use Queendev\PhpFramework\Http\Kernel;
+use Queendev\PhpFramework\Http\Middleware\RequestHandler;
+use Queendev\PhpFramework\Http\Middleware\RequestHandlerInterface;
+use Queendev\PhpFramework\Http\Middleware\RouterDispatch;
 use Queendev\PhpFramework\Routing\Router;
 use Queendev\PhpFramework\Routing\RouterInterface;
 use Queendev\PhpFramework\Session\Session;
@@ -35,15 +38,30 @@ $container->delegate(new ReflectionContainer(true));
 
 $container->add('APP_ENV', new StringArgument($appEnv));
 
+// Routing services
 $container->add(RouterInterface::class, Router::class);
 $container->extend(RouterInterface::class)->addMethodCall('registerRoutes', [new ArrayArgument($routes)]);
 
-$container->add(Kernel::class)
-    ->addArgument(RouterInterface::class)
+$container->add(RequestHandlerInterface::class, RequestHandler::class)
     ->addArgument($container);
 
+$container->add(Kernel::class)
+    ->addArguments([
+        $container,
+        RequestHandlerInterface::class
+    ]);
+
+
+$container->add(RouterDispatch::class)
+    ->addArguments([
+        RouterInterface::class,
+        $container
+    ]);
+
+// Session services
 $container->add(SessionInterface::class, Session::class);
 
+// Twig services
 $container->add('twig-factory', TwigFactory::class)
     ->addArguments([
         new StringArgument($viewsPath),
@@ -54,10 +72,12 @@ $container->addShared('twig', function () use ($container): Environment {
     return $container->get('twig-factory')->create();
 });
 
+// Controller services
 $container->inflector(AbstractController::class)
     ->invokeMethod('setContainer', [$container])
     ->invokeMethod('setSession', [$container->get(SessionInterface::class)]);
 
+// Database services
 $container->add(ConnectionFactory::class)
     ->addArgument(new StringArgument($databaseUrl));
 
@@ -68,7 +88,6 @@ $container->addShared(Connection::class, function () use ($container): Connectio
 /** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 // Console services
-
 $container->add(Application::class)
     ->addArgument($container);
 
