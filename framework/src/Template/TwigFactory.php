@@ -28,6 +28,7 @@ class TwigFactory
         $twig->addExtension(new DebugExtension());
         $twig->addFunction(new TwigFunction('session', [$this, 'getSession']));
         $twig->addFunction(new TwigFunction('uri', [$this, 'getUri']));
+        $twig->addFunction(new TwigFunction('textTruncate', [$this, 'textTruncate']));
 
         return $twig;
     }
@@ -40,5 +41,13 @@ class TwigFactory
     public function getUri()
     {
         return $_SERVER['REQUEST_URI'];
+    }
+
+    public function textTruncate(string $text, int $maxLength = 45): string
+    {
+        if (mb_strlen($text) > $maxLength) {
+            $text = mb_strimwidth($text, 0, $maxLength, '...');
+        }
+        return $text;
     }
 }
