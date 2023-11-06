@@ -1,0 +1,17 @@
+{% set flashType = ['error', 'success'] | filter(type => session().hasFlash(type)) | first %}
+
+{% if flashType == 'error' %}
+    {% set alertClass = 'alert-danger' %}
+{% elseif flashType == 'success' %}
+    {% set alertClass = 'alert-success' %}
+{% endif %}
+
+{% if flashType is defined %}
+    <div class="alert {{ alertClass }} mt-3">
+        <ul class="m-0">
+            {% for message in session().getFlash(flashType) %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}

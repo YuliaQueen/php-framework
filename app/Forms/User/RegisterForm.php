@@ -2,16 +2,27 @@
 
 namespace App\Forms\User;
 
+use App\Entities\User;
+use App\Services\UserService;
+use Doctrine\DBAL\Exception;
+
 class RegisterForm
 {
-    const MIN_NAME_LENGTH     = 3;
-    const MAX_NAME_LENGTH     = 30;
+    const MIN_NAME_LENGTH = 3;
+    const MAX_NAME_LENGTH = 30;
     const MIN_PASSWORD_LENGTH = 6;
 
     private ?string $name;
     private string $email;
     private string $password;
     private string $passwordConfirmation;
+
+    public function __construct(
+        private UserService $userService
+    )
+    {
+
+    }
 
     public function setFields(
         string $email,
@@ -24,6 +35,22 @@ class RegisterForm
         $this->password = $password;
         $this->passwordConfirmation = $passwordConfirmation;
         $this->name = $name;
+    }
+
+    /**
+     * @return User
+     * @throws Exception
+     */
+    public function save(): User
+    {
+        $user = User::create(
+            $this->email,
+            password_hash($this->password, PASSWORD_DEFAULT),
+            $this->name,
+            new \DateTimeImmutable()
+        );
+
+        return $this->userService->save($user);
     }
 
     public function getValidationErrors(): array

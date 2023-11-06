@@ -3,19 +3,11 @@
 namespace App\Services;
 
 use App\Entities\Post;
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Query\QueryBuilder;
 use Queendev\PhpFramework\Http\Exceptions\NotFoundException;
 
-class PostService
+class PostService extends AbstractService
 {
-    public function __construct(
-        private Connection $db
-    )
-    {
-    }
-
     /**
      * @param Post $post
      * @return Post
@@ -23,9 +15,7 @@ class PostService
      */
     public function save(Post $post): Post
     {
-        $queryBuilder = $this->db->createQueryBuilder();
-
-        $queryBuilder->insert('posts')
+        $this->queryBuilder->insert('posts')
             ->values([
                 'title' => ':title',
                 'content' => ':content',
@@ -51,7 +41,7 @@ class PostService
      */
     public function findById(int $id): ?Post
     {
-        $queryBuilder = $this->getQueryBuilder();
+        $queryBuilder = $this->queryBuilder;
 
         $result = $queryBuilder->select('*')
             ->from('posts')
@@ -66,9 +56,9 @@ class PostService
         }
 
         return Post::create(
-            title:     $post['title'],
-            content:   $post['content'],
-            id:        $post['id'],
+            title: $post['title'],
+            content: $post['content'],
+            id: $post['id'],
             createdAt: new \DateTimeImmutable($post['created_at']),
         );
     }
@@ -94,7 +84,7 @@ class PostService
      */
     public function findAll()
     {
-        $result =  $this->getQueryBuilder()
+        $result = $this->queryBuilder
             ->select('*')
             ->from('posts')
             ->orderBy('created_at', 'DESC')
@@ -105,21 +95,13 @@ class PostService
         $posts = [];
         foreach ($result as $post) {
             $posts[] = Post::create(
-                title:     $post['title'],
-                content:   $post['content'],
-                id:        $post['id'],
+                title: $post['title'],
+                content: $post['content'],
+                id: $post['id'],
                 createdAt: new \DateTimeImmutable($post['created_at']),
             );
         }
 
         return $posts;
-    }
-
-    /**
-     * @return QueryBuilder
-     */
-    private function getQueryBuilder(): QueryBuilder
-    {
-        return $this->db->createQueryBuilder();
     }
 }

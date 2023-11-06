@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Forms\User\RegisterForm;
+use App\Services\UserService;
+use Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Queendev\PhpFramework\Controller\AbstractController;
@@ -11,6 +13,12 @@ use Queendev\PhpFramework\Http\Response;
 
 class RegisterController extends AbstractController
 {
+    public function __construct(
+        private UserService $userService
+    )
+    {
+    }
+
     /**
      * @return Response
      * @throws ContainerExceptionInterface
@@ -21,9 +29,11 @@ class RegisterController extends AbstractController
         return $this->render('/register/form');
     }
 
-    public function register()
+    public function register(): RedirectResponse
     {
-        $form = new RegisterForm();
+        $redirectResponse = new RedirectResponse('/register');
+
+        $form = new RegisterForm($this->userService);
         $form->setFields(
             $this->request->input('email'),
             $this->request->input('password'),
@@ -36,9 +46,17 @@ class RegisterController extends AbstractController
                 $this->request->getSession()->setFlash('error', $error);
             }
 
-            return new RedirectResponse('/register');
+            return $redirectResponse;
         }
 
-        //TODO implement logic
+        try {
+            $user = $form->save();
+            //TODO add user to session
+            $this->request->getSession()->setFlash('success', 'Your account has been created');
+            return $redirectResponse;
+        } catch (Exception $exception) {
+            $this->request->getSession()->setFlash('error', $exception->getMessage());
+            return $redirectResponse;
+        }
     }
 }

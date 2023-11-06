@@ -14,7 +14,7 @@ class User
     {
     }
 
-    public static function create($email, $password, $name = null, $id = null, $createdAt = null): static
+    public static function create($email, $password, $name = null, $createdAt = null, $id = null): static
     {
         $createdAt = $createdAt ?? new \DateTimeImmutable();
 
@@ -60,5 +60,15 @@ class User
     public function setCreatedAt(?\DateTimeImmutable $createdAt): void
     {
         $this->createdAt = $createdAt;
+    }
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
     }
 }
