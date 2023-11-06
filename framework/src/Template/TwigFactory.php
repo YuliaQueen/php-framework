@@ -29,6 +29,7 @@ class TwigFactory
         $twig->addFunction(new TwigFunction('session', [$this, 'getSession']));
         $twig->addFunction(new TwigFunction('uri', [$this, 'getUri']));
         $twig->addFunction(new TwigFunction('textTruncate', [$this, 'textTruncate']));
+        $twig->addFunction(new TwigFunction('randomHexColor', [$this, 'randomHexColor']));
 
         return $twig;
     }
@@ -38,7 +39,7 @@ class TwigFactory
         return $this->session;
     }
 
-    public function getUri()
+    public function getUri(): string
     {
         return $_SERVER['REQUEST_URI'];
     }
@@ -49,5 +50,15 @@ class TwigFactory
             $text = mb_strimwidth($text, 0, $maxLength, '...');
         }
         return $text;
+    }
+
+    function randomHexColor(): string{
+        $hexColor = '#';
+
+        for ($i = 0; $i < 6; $i++) {
+            $hexColor .= dechex(mt_rand(0, 15));
+        }
+
+        return $hexColor;
     }
 }
