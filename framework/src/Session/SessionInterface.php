@@ -20,5 +20,5 @@ interface SessionInterface
 
     public function hasFlash(string $type): bool;
 
-    public function clearFlash(string $type): void;
+    public function clearFlash(): void;
 }

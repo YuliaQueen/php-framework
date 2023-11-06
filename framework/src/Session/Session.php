@@ -57,11 +57,10 @@ class Session implements SessionInterface
         return isset($flash[$type]);
     }
 
-    public function clearFlash(string $type): void
+    public function clearFlash(): void
     {
         $flash = $this->getFlashByKey();
-        unset($flash[$type]);
-        $this->set(self::FLASH_KEY, $flash);
+        unset($flash);
     }
 
     /**

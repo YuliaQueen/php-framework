@@ -40,6 +40,11 @@ class Kernel
         return $response;
     }
 
+    public function terminate(Request $request, Response $response): void
+    {
+        $request->getSession()?->clearFlash();
+    }
+
     /**
      * @param \Exception $e
      * @return Response
