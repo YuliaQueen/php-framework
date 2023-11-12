@@ -11,4 +11,6 @@ interface SessionAuthInterface
     public function logout(): void;
 
     public function getUser(): AuthUserInterface;
+
+    public function check(): bool;
 }

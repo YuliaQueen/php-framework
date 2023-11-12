@@ -5,11 +5,13 @@ namespace Queendev\PhpFramework\Session;
 class Session implements SessionInterface
 {
     private const FLASH_KEY   = 'flash';
-    public const USER_ID_KEY  = 'user_id';
+    public const AUTH_KEY  = 'user_id';
 
     public function start(): void
     {
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
     }
 
     public function get(string $key, mixed $default = null): mixed

@@ -35,7 +35,7 @@ class SessionAuthentication implements SessionAuthInterface
 
     public function login(AuthUserInterface $user): void
     {
-        $this->session->set(Session::USER_ID_KEY, $user->getId());
+        $this->session->set(Session::AUTH_KEY, $user->getId());
 
         $this->user = $user;
     }
@@ -48,5 +48,10 @@ class SessionAuthentication implements SessionAuthInterface
     public function getUser(): AuthUserInterface
     {
         return $this->user;
+    }
+
+    public function check(): bool
+    {
+        return $this->session->has(Session::AUTH_KEY);
     }
 }
