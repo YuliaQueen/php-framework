@@ -1,10 +1,13 @@
 <?php
 
+use App\Services\UserService;
 use Doctrine\DBAL\Connection;
 use League\Container\Argument\Literal\ArrayArgument;
 use League\Container\Argument\Literal\StringArgument;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
+use Queendev\PhpFramework\Authentication\SessionAuthentication;
+use Queendev\PhpFramework\Authentication\SessionAuthInterface;
 use Queendev\PhpFramework\Console\Application;
 use Queendev\PhpFramework\Console\CommandPrefix;
 use Queendev\PhpFramework\Console\Commands\MigrateCommand;
@@ -60,6 +63,12 @@ $container->add(RouterDispatch::class)
 
 // Session services
 $container->add(SessionInterface::class, Session::class);
+
+$container->add(SessionAuthInterface::class, SessionAuthentication::class)
+    ->addArguments([
+        UserService::class,
+        SessionInterface::class
+    ]);
 
 // Twig services
 $container->add('twig-factory', TwigFactory::class)

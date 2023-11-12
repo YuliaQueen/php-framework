@@ -12,4 +12,6 @@ return [
     Route::post('/register', [\App\Controllers\RegisterController::class, 'register']),
     Route::get('/login', [\App\Controllers\LoginController::class, 'form']),
     Route::post('/login', [\App\Controllers\LoginController::class, 'login']),
+    Route::get('/logout', [\App\Controllers\LoginController::class, 'logout']),
+    Route::get('/dashboard', [\App\Controllers\DashboardController::class, 'index']),
 ];

@@ -2,13 +2,15 @@
 
 namespace App\Entities;
 
-class User
+use Queendev\PhpFramework\Authentication\AuthUserInterface;
+
+class User implements AuthUserInterface
 {
     public function __construct(
         private ?int                    $id,
         private ?string                 $name,
         private string                  $email,
-        private string                  $password,
+        private readonly string         $password,
         private \DateTimeImmutable|null $createdAt
     )
     {
@@ -27,7 +29,7 @@ class User
         );
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
