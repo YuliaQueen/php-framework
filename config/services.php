@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\DefaultController;
 use App\Services\UserService;
 use Doctrine\DBAL\Connection;
 use League\Container\Argument\Literal\ArrayArgument;
@@ -87,6 +88,12 @@ $container->addShared('twig', function () use ($container): Environment {
 // Controller services
 $container->inflector(AbstractController::class)
     ->invokeMethod('setContainer', [$container]);
+
+$container->add(DefaultController::class)
+    ->addArguments([
+        SessionAuthInterface::class,
+        UserService::class
+    ]);
 
 // Database services
 $container->add(ConnectionFactory::class)

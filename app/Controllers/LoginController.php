@@ -4,19 +4,11 @@ namespace App\Controllers;
 
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Queendev\PhpFramework\Authentication\SessionAuthInterface;
-use Queendev\PhpFramework\Controller\AbstractController;
 use Queendev\PhpFramework\Http\RedirectResponse;
 use Queendev\PhpFramework\Http\Response;
 
-class LoginController extends AbstractController
+class LoginController extends DefaultController
 {
-    public function __construct(
-        private SessionAuthInterface $auth
-    )
-    {
-    }
-
     /**
      * @return Response
      * @throws ContainerExceptionInterface

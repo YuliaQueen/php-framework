@@ -7,9 +7,9 @@ use Queendev\PhpFramework\Routing\Route;
 return [
     Route::get('/', [\App\Controllers\HomeController::class, 'index']),
     Route::get('/posts/{id:\d+}', [\App\Controllers\PostsController::class, 'view']),
-    Route::get('/posts/create', [\App\Controllers\PostsController::class, 'create']),
-    Route::get('/blog', [\App\Controllers\PostsController::class, 'all']),
+    Route::get('/posts/create', [\App\Controllers\PostsController::class, 'create'], [Authenticate::class]),
     Route::post('/posts', [\App\Controllers\PostsController::class, 'store']),
+    Route::get('/blog', [\App\Controllers\PostsController::class, 'all']),
     Route::get('/register', [\App\Controllers\RegisterController::class, 'form'], [Guest::class]),
     Route::post('/register', [\App\Controllers\RegisterController::class, 'register']),
     Route::get('/login', [\App\Controllers\LoginController::class, 'form'], [Guest::class]),
