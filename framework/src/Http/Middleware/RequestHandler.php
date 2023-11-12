@@ -11,8 +11,8 @@ use Queendev\PhpFramework\Http\Response;
 class RequestHandler implements RequestHandlerInterface
 {
     private array $middlewares = [
+        ExtractRouteInfo::class,
         StartSession::class,
-        Authenticate::class,
         RouterDispatch::class
     ];
 
@@ -40,5 +40,10 @@ class RequestHandler implements RequestHandlerInterface
         $middleware = $this->container->get($middlewareClass);
 
         return $middleware->process($request, $this);
+    }
+
+    public function injectMiddleware(array $middlewares): void
+    {
+        array_splice($this->middlewares, 0, 0, $middlewares);
     }
 }

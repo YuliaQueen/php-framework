@@ -8,6 +8,10 @@ class Request
 {
     private SessionInterface $session;
 
+    private mixed $routeHandler;
+
+    private array $routeArgs;
+
     /**
      * @param array $getParams
      * @param array $postData
@@ -102,5 +106,25 @@ class Request
     public function input(string $key, $default = null): mixed
     {
         return $this->postData[$key] ?? $default;
+    }
+
+    public function setRouteHandler(mixed $handler): void
+    {
+        $this->routeHandler = $handler;
+    }
+
+    public function setRouteArgs(array $args): void
+    {
+        $this->routeArgs = $args;
+    }
+
+    public function getRouteHandler(): mixed
+    {
+        return $this->routeHandler;
+    }
+
+    public function getRouteArgs(): array
+    {
+        return $this->routeArgs;
     }
 }

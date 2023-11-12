@@ -15,6 +15,7 @@ use Queendev\PhpFramework\Console\Kernel as ConsoleKernel;
 use Queendev\PhpFramework\Controller\AbstractController;
 use Queendev\PhpFramework\Dbal\ConnectionFactory;
 use Queendev\PhpFramework\Http\Kernel;
+use Queendev\PhpFramework\Http\Middleware\ExtractRouteInfo;
 use Queendev\PhpFramework\Http\Middleware\RequestHandler;
 use Queendev\PhpFramework\Http\Middleware\RequestHandlerInterface;
 use Queendev\PhpFramework\Http\Middleware\RouterDispatch;
@@ -43,7 +44,6 @@ $container->add('APP_ENV', new StringArgument($appEnv));
 
 // Routing services
 $container->add(RouterInterface::class, Router::class);
-$container->extend(RouterInterface::class)->addMethodCall('registerRoutes', [new ArrayArgument($routes)]);
 
 $container->add(RequestHandlerInterface::class, RequestHandler::class)
     ->addArgument($container);
@@ -60,6 +60,9 @@ $container->add(RouterDispatch::class)
         RouterInterface::class,
         $container
     ]);
+
+$container->add(ExtractRouteInfo::class)
+    ->addArgument(new ArrayArgument($routes));
 
 // Session services
 $container->add(SessionInterface::class, Session::class);

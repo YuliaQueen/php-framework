@@ -51,7 +51,6 @@ class RegisterController extends AbstractController
 
         try {
             $user = $form->save();
-            //TODO add user to session
             $this->request->getSession()->setFlash('success', 'Your account has been created');
             return $redirectResponse;
         } catch (Exception $exception) {

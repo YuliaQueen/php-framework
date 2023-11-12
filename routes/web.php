@@ -1,5 +1,6 @@
 <?php
 
+use Queendev\PhpFramework\Http\Middleware\Authenticate;
 use Queendev\PhpFramework\Routing\Route;
 
 return [
@@ -13,5 +14,5 @@ return [
     Route::get('/login', [\App\Controllers\LoginController::class, 'form']),
     Route::post('/login', [\App\Controllers\LoginController::class, 'login']),
     Route::get('/logout', [\App\Controllers\LoginController::class, 'logout']),
-    Route::get('/dashboard', [\App\Controllers\DashboardController::class, 'index']),
+    Route::get('/dashboard', [\App\Controllers\DashboardController::class, 'index'], [Authenticate::class]),
 ];
