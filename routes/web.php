@@ -9,5 +9,7 @@ return [
     Route::get('/blog', [\App\Controllers\PostsController::class, 'all']),
     Route::post('/posts', [\App\Controllers\PostsController::class, 'store']),
     Route::get('/register', [\App\Controllers\RegisterController::class, 'form']),
-    Route::post('/register', [\App\Controllers\RegisterController::class, 'register'])
+    Route::post('/register', [\App\Controllers\RegisterController::class, 'register']),
+    Route::get('/login', [\App\Controllers\LoginController::class, 'form']),
+    Route::post('/login', [\App\Controllers\LoginController::class, 'login']),
 ];
