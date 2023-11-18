@@ -35,4 +35,12 @@ class LoginController extends DefaultController
 
         return new RedirectResponse('/dashboard');
     }
+
+    public function logout(): RedirectResponse
+    {
+        $this->auth->logout();
+
+        $this->request->getSession()->setFlash('success', 'You have been logged out');
+        return new RedirectResponse('/login');
+    }
 }
