@@ -29,6 +29,35 @@ class Response
         echo $this->content;
     }
 
+    public function getHeaders(): array
+    {
+        return $this->headers;
+    }
+
+    /**
+     * @param string $string
+     * @return string
+     */
+    public function getHeader(string $string): string
+    {
+        return $this->headers[$string];
+    }
+
+    /**
+     * @param string $key
+     * @param int $value
+     * @return void
+     */
+    public function setHeader(string $key, int $value): void
+    {
+        $this->headers[$key] = $value;
+    }
+
+    public function getStatusCode(): int
+    {
+        return $this->statusCode;
+    }
+
     /**
      * @param string $content
      * @return Response
@@ -40,13 +69,8 @@ class Response
         return $this;
     }
 
-    public function getHeader(string $string): string
+    public function getContent(): string
     {
-        return $this->headers[$string];
-    }
-
-    public function getStatusCode(): int
-    {
-        return $this->statusCode;
+        return $this->content;
     }
 }

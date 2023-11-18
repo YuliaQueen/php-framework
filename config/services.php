@@ -15,6 +15,7 @@ use Queendev\PhpFramework\Console\Commands\MigrateCommand;
 use Queendev\PhpFramework\Console\Kernel as ConsoleKernel;
 use Queendev\PhpFramework\Controller\AbstractController;
 use Queendev\PhpFramework\Dbal\ConnectionFactory;
+use Queendev\PhpFramework\Event\EventDispatcher;
 use Queendev\PhpFramework\Http\Kernel;
 use Queendev\PhpFramework\Http\Middleware\ExtractRouteInfo;
 use Queendev\PhpFramework\Http\Middleware\RequestHandler;
@@ -52,7 +53,8 @@ $container->add(RequestHandlerInterface::class, RequestHandler::class)
 $container->add(Kernel::class)
     ->addArguments([
         $container,
-        RequestHandlerInterface::class
+        RequestHandlerInterface::class,
+        EventDispatcher::class
     ]);
 
 

@@ -5,6 +5,8 @@ namespace Queendev\PhpFramework\Http;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Queendev\PhpFramework\Event\EventDispatcher;
+use Queendev\PhpFramework\Http\Events\ResponseEvent;
 use Queendev\PhpFramework\Http\Exceptions\HttpException;
 use Queendev\PhpFramework\Http\Middleware\RequestHandlerInterface;
 
@@ -17,8 +19,9 @@ class Kernel
      * @throws NotFoundExceptionInterface
      */
     public function __construct(
-        private ContainerInterface      $container,
-        private RequestHandlerInterface $requestHandler
+        private readonly ContainerInterface      $container,
+        private readonly RequestHandlerInterface $requestHandler,
+        private readonly EventDispatcher         $eventDispatcher
     )
     {
         $this->appEnv = $container->get('APP_ENV');
@@ -36,6 +39,8 @@ class Kernel
         } catch (\Exception $e) {
             return $this->createExceptionResponse($e);
         }
+
+        $this->eventDispatcher->dispatch(new ResponseEvent($request, $response));
 
         return $response;
     }
