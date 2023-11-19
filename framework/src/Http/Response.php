@@ -58,6 +58,11 @@ class Response
         return $this->statusCode;
     }
 
+    public function setStatusCode(int $statusCode): void
+    {
+        $this->statusCode = $statusCode;
+    }
+
     /**
      * @param string $content
      * @return Response
