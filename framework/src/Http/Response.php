@@ -26,7 +26,15 @@ class Response
      */
     public function send()
     {
+        ob_start();
+
+        foreach ($this->headers as $key => $value) {
+            header("{$key}: {$value}");
+        }
+
         echo $this->content;
+
+        ob_end_flush();
     }
 
     public function getHeaders(): array

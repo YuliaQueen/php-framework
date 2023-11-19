@@ -11,6 +11,8 @@ $request = Request::createFromGlobals();
 
 $container = require BASE_PATH . '/config/services.php';
 
+require_once BASE_PATH . '/bootstrap/bootstrap.php';
+
 $kernel = $container->get(Kernel::class);
 
 $response = $kernel->handle($request);
