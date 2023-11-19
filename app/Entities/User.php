@@ -3,8 +3,9 @@
 namespace App\Entities;
 
 use Queendev\PhpFramework\Authentication\AuthUserInterface;
+use Queendev\PhpFramework\Dbal\Entity;
 
-class User implements AuthUserInterface
+class User extends Entity implements AuthUserInterface
 {
     public function __construct(
         private ?int                    $id,

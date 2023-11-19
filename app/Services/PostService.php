@@ -27,7 +27,8 @@ class PostService extends AbstractService
                 'created_at' => $post->getCreatedAt()->format('Y-m-d H:i:s')])
             ->executeQuery();
 
-        $post->setId($this->db->lastInsertId());
+        $id = $this->entityService->save($post);
+        $post->setId($id);
 
         return $post;
     }

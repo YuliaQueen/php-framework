@@ -31,7 +31,8 @@ class UserService extends AbstractService implements UserServiceInterface
             ])
             ->executeQuery();
 
-        $user->setId($this->db->lastInsertId());
+        $id = $this->entityService->save($user);
+        $user->setId($id);
 
         return $user;
     }
